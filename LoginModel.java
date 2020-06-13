@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package foody;
+package foodyorder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,9 +16,8 @@ import java.util.logging.Logger;
  *
  * @author Winston
  */
-
 public class LoginModel {
-    static int customer_id;
+     
     
     Connection connection;
     public LoginModel(){
@@ -32,7 +31,6 @@ public class LoginModel {
         try {
             return !connection.isClosed();
         } catch (SQLException ex) {
-            System.out.println("error");
             Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("error");
             return false;
@@ -40,20 +38,41 @@ public class LoginModel {
         }
         
     } 
-    public boolean isLogin(String email ,String pass) throws SQLException{
-        //int customer_id;
+    public boolean isLogin(int userid,String pass) throws SQLException{
         PreparedStatement preparedStatement = null ;
         ResultSet resultSet =null;
-        String query="select customer_id from customer where email_id=? and password=?";
+        String query="select * from restaurant where restaurant_id=? and password=?";
         try{
             preparedStatement =connection.prepareStatement(query);
-            preparedStatement.setString(1, email);
+            preparedStatement.setInt(1, userid);
             preparedStatement.setString(2, pass);
             resultSet=preparedStatement.executeQuery();
             if(resultSet.next()){
-                customer_id =resultSet.getInt("customer_id");
-                System.out.println(""+customer_id);
-                LoginController.CustomerId(customer_id);
+                return true;
+            }else{
+                return false;
+            }
+        }catch(SQLException e){
+            System.out.println(" no!"+e);
+            return false;
+        }finally{
+            preparedStatement.close();
+            resultSet.close();
+        }
+        
+        
+        
+    }
+     public boolean isAdmin(int userid,String pass) throws SQLException{
+        PreparedStatement preparedStatement = null ;
+        ResultSet resultSet =null;
+        String query="select * from restaurant where restaurant_id=? and password=? and designation='ADMIN'";
+        try{
+            preparedStatement =connection.prepareStatement(query);
+            preparedStatement.setInt(1, userid);
+            preparedStatement.setString(2, pass);
+            resultSet=preparedStatement.executeQuery();
+            if(resultSet.next()){
                 return true;
             }else{
                 return false;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package foody;
+package foodyorder;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +14,7 @@ import java.sql.SQLException;
  * @author Winston
  */
 public class SqlConnection {
+    
      public static Connection Connector(){
         try {
             String s ="jdbc:mysql://localhost:3306/foody?zeroDateTimeBehavior=convertToNull";
@@ -26,5 +27,6 @@ public class SqlConnection {
           
         }
         
-    }
+    
+}
 }

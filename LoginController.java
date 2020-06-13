@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package foody;
+package foodyorder;
+
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import static foody.SignupController.infoBox;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -21,42 +21,32 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
- * FXML Controller class
  *
  * @author Winston
  */
 public class LoginController implements Initializable {
-    public LoginModel loginModel=new LoginModel();
-   /* private static int cust_id;*/
-    /**
-     * Initializes the controller class.
-     */
+    LoginModel loginModel =new LoginModel();
     @FXML
-    private JFXTextField textemail;
+    private JFXTextField emptxt;
 
     @FXML
-    private JFXPasswordField textpass;
-    
-    @FXML
-    private Label alertLabel;
-    public static int cust_id;
+    private JFXPasswordField passtxt;
+    private int empid;
     
     
-  @FXML
     public void exitScreen(ActionEvent event){
         System.exit(0);
     }
-      @FXML
-     public void MenuScreen(ActionEvent event) throws Exception  {
+    
+    @FXML
+     public void TakeOrderScreen(ActionEvent event) throws Exception  {
 		Stage primaryStage =new Stage();
-		Parent root =FXMLLoader.load(getClass().getResource("Menu.fxml"));
-                primaryStage.setTitle("Welcome To Foody Menu");
+                primaryStage.initStyle(StageStyle.UNDECORATED);
+		Parent root =FXMLLoader.load(getClass().getResource("TakeOrder.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -64,6 +54,8 @@ public class LoginController implements Initializable {
             // Hide this current window (if this is what you want)
             ((Node)(event.getSource())).getScene().getWindow().hide();
 	}
+  
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
          if(loginModel.isDbConnected()){
@@ -71,39 +63,48 @@ public class LoginController implements Initializable {
         }else{
              System.out.println("Db not connected");
         }
-    } 
-    
-     public static void CustomerId(int cusst){
-        cust_id=LoginModel.customer_id;
-        
-    }
-    public void Login(ActionEvent event){
+    }    
+    public void Login(ActionEvent event) {
      try {
-            if(loginModel.isLogin(textemail.getText(), textpass.getText())){
-                infoBox("Login Successfull "+cust_id,null,"Success" );
+
+        
+         try{
+          empid=Integer.parseInt(emptxt.getText());
+          
+         }catch(NumberFormatException e){
+             System.out.println("enter correct id and pass");
+         }
+         String emppass=passtxt.getText();
+         
+            if(loginModel.isLogin(empid,emppass )){
+                if(loginModel.isAdmin(empid, emppass)){
+                    infoBox("Login Successfull As Admin",null,"Success" );
                 
                 Node node = (Node)event.getSource();
                 Stage primaryStage =new Stage();
-               Stage dialogStage = (Stage) node.getScene().getWindow();
-               dialogStage.close();
-               Scene scene = new Scene(FXMLLoader.load(getClass().getResource("Menu.fxml")));
+                Stage dialogStage = (Stage) node.getScene().getWindow();
+                dialogStage.close();
+                Scene scene = new Scene(FXMLLoader.load(getClass().getResource("AdminPanel.fxml")));
 		primaryStage.setScene(scene);
-                
-               dialogStage.setScene(scene);
-               dialogStage.show();
-                
-                
+                dialogStage.setScene(scene);
+                dialogStage.show();
+                }else{
+                 infoBox("Login Successfull as Employee",null,"Success" );
+                 Node node = (Node)event.getSource();
+                Stage primaryStage =new Stage();
+                Stage dialogStage = (Stage) node.getScene().getWindow();
+                dialogStage.close();
+                Scene scene = new Scene(FXMLLoader.load(getClass().getResource("TakeOrder.fxml")));
+		primaryStage.setScene(scene);
+                dialogStage.setScene(scene);
+                dialogStage.show();
+                } 
             }else{
-                infoBox("Enter correct email and password",null,"Failed" );
+                infoBox("Enter correct id and password",null,"Failed" );
             }
-
-     }
-     catch(SQLException ex)
-     {
+        } catch (SQLException | IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-            alertLabel.setText("Enter correct email and password");
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+             infoBox("Enter correct id and password",null,"Failed" );
         }
         
     }

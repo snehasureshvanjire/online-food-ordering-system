@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package foody;
+package foodyorder;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,17 +13,51 @@ import javafx.beans.property.SimpleStringProperty;
  * @author Winston
  */
 public class ModelTable {
-    private final SimpleStringProperty menuname;
-    private final SimpleIntegerProperty menuid;
-    private final SimpleIntegerProperty quantity_item;
-    private final SimpleIntegerProperty price;
 
-    public ModelTable(String menuname, int menuid, int quantity_item, int price) {
-        this.menuname = new SimpleStringProperty(menuname);
-        this.menuid = new SimpleIntegerProperty(menuid);
-        this.quantity_item = new SimpleIntegerProperty(quantity_item);
-        this.price = new SimpleIntegerProperty(price);
+    
+
+   
+    private final  SimpleIntegerProperty orderid;
+    private final  SimpleIntegerProperty custid;
+    private final  SimpleStringProperty menuname;
+    private final  SimpleStringProperty deliverytyp;
+    private final  SimpleStringProperty address;
+    private final  SimpleIntegerProperty qnt;
+    
+    public ModelTable(int orderid,int custid, String menuname,String deliverytyp, String address,int qnt) {
+        this.orderid = new SimpleIntegerProperty(orderid);
+        this.custid =new SimpleIntegerProperty(custid) ;
+        this.menuname = new SimpleStringProperty(menuname) ;
+        this.deliverytyp =new SimpleStringProperty(deliverytyp);
+        this.address = new SimpleStringProperty(address);
+        this.qnt=new SimpleIntegerProperty(qnt);
     }
+
+    public int getQnt() {
+        return qnt.get();
+    }
+    public void setQnt(int qnt) {
+        this.qnt.set(qnt);
+    }
+
+   
+
+    public int getOrderid() {
+        return orderid.get();
+    }
+
+    public void setOrderid(int orderid) {
+        this.orderid.set(orderid);
+    }
+
+    public int getCustid() {
+        return custid.get();
+    }
+
+    public void setCustid(int custid) {
+        this.custid.set(custid);
+    }
+     
 
     public String getMenuname() {
         return menuname.get();
@@ -33,30 +67,27 @@ public class ModelTable {
         this.menuname.set(menuname);
     }
 
-    public int getMenuid() {
-        return menuid.get();
+    public String getDeliverytyp() {
+        return deliverytyp.get();
     }
 
-    public void setMenuid(int menuid) {
-        this.menuid.set(menuid); 
+    public void setDeliverytyp(String deliverytyp) {
+        this.deliverytyp.set(deliverytyp);
     }
 
-    public int getQuantity_item() {
-        return quantity_item.get();
+    public String getAddress() {
+        return address.get();
     }
 
-    public void setQuantity_item(int quantity_item) {
-        this.quantity_item.set(quantity_item);
+    public void setAddress(String address) {
+        this.address.set(address);
     }
+    
 
-    public int getPrice() {
-        return price.get();
-    }
-
-    public void setPrice(int price) {
-        this.price.set(price);
-    }
-
+       
+    
+  
     
     
+
 }
